@@ -190,7 +190,14 @@ public class MovieCollection
   {
     System.out.println("Enter search term: ");
     String castSearch = scanner.nextLine();
+
     ArrayList<String> returnValue = new ArrayList<String>();
+    ArrayList<Movie> movie = new ArrayList<Movie>();
+
+    for(int i =0 ; i < movies.size(); i++){
+      if(movies.get(i).indexOf(castSearch) != -1)
+    }
+
   }
   private void sortResults(ArrayList<Movie> listToSort)
   {
