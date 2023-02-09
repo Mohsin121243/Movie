@@ -271,12 +271,62 @@ public class MovieCollection {
     System.out.println("\n ** Press Enter to Return to Main Menu **");
     scanner.nextLine();
   }
-  
+
   private void listGenres()
   {
+    System.out.println("List of all represented genres: ");
 
+    ArrayList<String> genreList = new ArrayList<>();
+    for (Movie movie : movies) {
+      String[] temp = movie.getGenres().split("\\|");
+      for (String genre : temp) {
+        if (!genreList.contains(genre)) {
+          genreList.add(genre);
+        }
+      }
+    }
+
+    Collections.sort(genreList);
+    for (int i = 0; i < genreList.size(); i++) {
+      System.out.println((i + 1) + ". " + genreList.get(i));
+    }
+
+    System.out.println("Select a genre by number: ");
+    int selectedGenre = scanner.nextInt();
+    String selectedGenreStr = genreList.get(selectedGenre - 1);
+
+    ArrayList<String> movieTitles = new ArrayList<>();
+    for (Movie movie : movies) {
+      String[] temp = movie.getGenres().split("\\|");
+      for (String genre : temp) {
+        if (genre.equals(selectedGenreStr)) {
+          movieTitles.add(movie.getTitle());
+          break;
+        }
+      }
+    }
+
+    Collections.sort(movieTitles);
+    System.out.println("List of movie titles in the selected genre: ");
+    for (int i = 0; i < movieTitles.size(); i++) {
+      System.out.println((i + 1) + ". " + movieTitles.get(i));
+    }
+
+    System.out.println("Select a movie by number: ");
+    int selectedMovie = scanner.nextInt();
+    String selectedMovieTitle = movieTitles.get(selectedMovie - 1);
+
+    for (Movie movie : movies) {
+      if (movie.getTitle().equals(selectedMovieTitle)) {
+        System.out.println("Selected movie: ");
+        System.out.println("Title: " + movie.getTitle());
+        System.out.println("Cast: " + movie.getCast());
+        System.out.println("Genres: " + movie.getGenres());
+        break;
+      }
+    }
   }
-  
+
   private void listHighestRated()
   {
   
