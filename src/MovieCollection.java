@@ -1,10 +1,12 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Scanner;
+
 
 public class MovieCollection {
   private ArrayList<Movie> movies;
@@ -143,24 +145,77 @@ public class MovieCollection {
     System.out.println("Enter search term: ");
     String castSearch = scanner.nextLine();
 
-    ArrayList<String> returnValue = new ArrayList<String>();
-    ArrayList<Movie> movie = new ArrayList<Movie>();
+    ArrayList<String> castMembers = new ArrayList<>();
     for (int i = 0; i < movies.size(); i++) {
-      String[] temp = movies.get(i).getCast().split("|");
-      for (int k = 0; k < temp.length; k++) {
-        if (temp[k].toLowerCase().indexOf(castSearch.toLowerCase()) != -1) {
-          returnValue.add(temp[k]);
+      String[] temp = movies.get(i).getCast().split("\\|");
+      for (int j = 0; j < temp.length; j++) {
+        String castMember = temp[j].toLowerCase();
+        if (castMember.contains(castSearch.toLowerCase()) && !castMembers.contains(castMember)) {
+          castMembers.add(temp[j]);
         }
       }
     }
-    Collections.sort(returnValue);
-    for(
-            int z = 0; z<returnValue.size();z++)
 
-    {
-      System.out.println((z + 1) + " " + returnValue.get(z));
+    Collections.sort(castMembers);
+    for (int i = 0; i < castMembers.size(); i++) {
+      for (int j = i + 1; j < castMembers.size(); j++) {
+        if (castMembers.get(i).equals(castMembers.get(j))) {
+          castMembers.remove(j);
+          j--;
+        }
+      }
+    }
+    for (int i = 0; i < castMembers.size(); i++) {
+
+      System.out.println((i + 1) + ". " + castMembers.get(i));
+    }
+
+    System.out.println("Enter the number of a cast member to see the movies they appear in: ");
+    int selectedCastMember = scanner.nextInt();
+    scanner.nextLine();
+    selectedCastMember--;
+
+    if (selectedCastMember < 0 || selectedCastMember >= castMembers.size()) {
+      System.out.println("Invalid selection");
+      return;
+    }
+
+    ArrayList<String> moviesByCastMember = new ArrayList<>();
+    for (int i = 0; i < movies.size(); i++) {
+      String[] temp = movies.get(i).getCast().split("\\|");
+      for (int j = 0; j < temp.length; j++) {
+        if (temp[j].equals(castMembers.get(selectedCastMember))) {
+          moviesByCastMember.add(movies.get(i).getTitle());
+          break;
+        }
+      }
+    }
+
+    Collections.sort(moviesByCastMember);
+    System.out.println("Movies:");
+    for (int i = 0; i < moviesByCastMember.size(); i++) {
+      System.out.println((i + 1) + ". " + moviesByCastMember.get(i));
+    }
+
+    System.out.println("Enter the number of a movie to learn about it: ");
+    int selectedMovie = scanner.nextInt();
+    scanner.nextLine();
+    selectedMovie--;
+
+    if (selectedMovie < 0 || selectedMovie >= moviesByCastMember.size()) {
+      System.out.println("Invalid selection");
+      return;
+    }
+
+    for (int i = 0; i < movies.size(); i++) {
+      if (movies.get(i).getTitle().equals(moviesByCastMember.get(selectedMovie))) {
+        System.out.println(movies.get(i));
+        break;
+      }
     }
   }
+
+
 
 
   private void searchKeywords()
