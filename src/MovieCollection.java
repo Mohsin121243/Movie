@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Scanner;
-
+import java.util.Arrays;
 
 public class MovieCollection {
   private ArrayList<Movie> movies;
@@ -329,12 +329,16 @@ public class MovieCollection {
 
   private void listHighestRated()
   {
-  
+    ArrayList<Double> ratingsList = new ArrayList<Double>();
+    for()
+
   }
   
   private void listHighestRevenue()
   {
-  
+    for(int i = 0; i<50; i++){
+      System.out.println(i+1 + ". "+ movies.get(i).getTitle() + ": "+movies.get(i).getRevenue());
+    }
   }
   
   private void importMovieList(String fileName)
