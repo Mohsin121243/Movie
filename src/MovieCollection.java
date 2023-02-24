@@ -2,11 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.Arrays;
+import java.util.*;
 
 public class MovieCollection {
   private ArrayList<Movie> movies;
@@ -149,16 +145,18 @@ public class MovieCollection {
     for (int i = 0; i < movies.size(); i++) {
       String[] temp = movies.get(i).getCast().split("\\|");
       for (int j = 0; j < temp.length; j++) {
+
         String castMember = temp[j].toLowerCase();
         if (castMember.contains(castSearch.toLowerCase()) && !castMembers.contains(castMember)) {
+
           castMembers.add(temp[j]);
-        }
-      }
-    }
+        }}}
 
     Collections.sort(castMembers);
     for (int i = 0; i < castMembers.size(); i++) {
+
       for (int j = i + 1; j < castMembers.size(); j++) {
+
         if (castMembers.get(i).equals(castMembers.get(j))) {
           castMembers.remove(j);
           j--;
@@ -171,6 +169,7 @@ public class MovieCollection {
     }
 
     System.out.println("Enter the number of a cast member to see the movies they appear in: ");
+
     int selectedCastMember = scanner.nextInt();
     scanner.nextLine();
     selectedCastMember--;
@@ -187,8 +186,7 @@ public class MovieCollection {
         if (temp[j].equals(castMembers.get(selectedCastMember))) {
           moviesByCastMember.add(movies.get(i).getTitle());
           break;
-        }
-      }
+        }}
     }
 
     Collections.sort(moviesByCastMember);
@@ -211,8 +209,7 @@ public class MovieCollection {
       if (movies.get(i).getTitle().equals(moviesByCastMember.get(selectedMovie))) {
         System.out.println(movies.get(i));
         break;
-      }
-    }
+      }}
   }
 
 
@@ -283,8 +280,7 @@ public class MovieCollection {
         if (!genreList.contains(genre)) {
           genreList.add(genre);
         }
-      }
-    }
+      }}
 
     Collections.sort(genreList);
     for (int i = 0; i < genreList.size(); i++) {
@@ -302,9 +298,7 @@ public class MovieCollection {
         if (genre.equals(selectedGenreStr)) {
           movieTitles.add(movie.getTitle());
           break;
-        }
-      }
-    }
+        }}}
 
     Collections.sort(movieTitles);
     System.out.println("List of movie titles in the selected genre: ");
@@ -329,10 +323,47 @@ public class MovieCollection {
 
   private void listHighestRated()
   {
-    ArrayList<Double> ratingsList = new ArrayList<Double>();
-    for()
-
+    ArrayList<Movie> ratingsList = movies;
+    Collections.sort(ratingsList, new Comparator<Movie>() {
+      public int compare(Movie o1, Movie o2) {
+       double oneRating = o1.getUserRating();
+       double twoRating = o2.getUserRating();
+       if(oneRating > twoRating){
+         return -1;
+       }
+       if(oneRating<twoRating){
+         return 1;
+       }
+       return 0;
+      }
+    });
+    System.out.println("TOP 50 Movies of all time: ");
+    for(int counter = 1; counter<=50; counter++){
+      System.out.println(counter + "." +" "+ratingsList.get(counter).getTitle()+": "+ratingsList.get(counter).getUserRating());
+    }
+    Scanner scanner = new Scanner(System.in);
+    boolean q = false;
+    while (!q) {
+      System.out.print("Enter the number of a movie to learn about (or 'q' to quit): ");
+      String input = scanner.nextLine();
+      if (input.equals("q")) {
+        q = true;
+      } else {
+        int choiceIndex = Integer.parseInt(input) ;
+        if (choiceIndex < 0 || choiceIndex >= movies.size()) {
+          System.out.println("Invalid choice. Please enter a number from 1 to 50.");
+        } else {
+          Movie movie = movies.get(choiceIndex);
+          System.out.println("Title: " + movie.getTitle());
+          System.out.println("User rating: " + movie.getUserRating());
+          System.out.println("Description: " + movie.getOverview());
+        }
+      }
+    }
   }
+
+
+
   
   private void listHighestRevenue()
   {
